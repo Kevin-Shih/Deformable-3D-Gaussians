@@ -27,7 +27,7 @@ try:
     from torch.utils.tensorboard import SummaryWriter
 
     TENSORBOARD_FOUND = True
-except ImportError:
+except ImportError as e:
     TENSORBOARD_FOUND = False
 
 

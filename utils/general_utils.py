@@ -14,6 +14,7 @@ import sys
 from datetime import datetime
 import numpy as np
 import random
+from matplotlib import pyplot as plt
 
 
 def inverse_sigmoid(x):
@@ -186,3 +187,15 @@ def safe_state(silent):
     np.random.seed(0)
     torch.manual_seed(0)
     torch.cuda.set_device(torch.device("cuda:0"))
+
+
+if __name__ == "__main__":
+    # Test the safe_state function
+    smooth_term = get_linear_noise_func(lr_init=0.1, lr_final=1e-15, lr_delay_mult=0.01, max_steps=20000)
+    anneal = []
+    for i in range(20000):
+        anneal.append(smooth_term(i))
+    anneal = np.array(anneal)
+    x = np.linspace(0, 1, 20000)
+    plt.plot(x, anneal)
+    plt.savefig("test.png")
