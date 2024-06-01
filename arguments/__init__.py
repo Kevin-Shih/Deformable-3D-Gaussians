@@ -12,6 +12,7 @@
 from argparse import ArgumentParser, Namespace
 import sys
 import os
+from typing import Literal
 
 
 class GroupParams:
@@ -96,6 +97,13 @@ class OptimizationParams(ParamGroup):
         self.densify_from_iter = 500
         self.densify_until_iter = 15_000
         self.densify_grad_threshold = 0.0007
+        # added hyperparameter for Annealing Smooth Training
+        self.ast_init = 0.1
+        self.ast_final=1e-15
+        self.ast_delay_mult = 0.01
+        self.ast_delay_steps = 0
+        self.ast_max_steps=20000
+        self.ast_strategy:Literal["linear", "exponential"] = "linear"
         super().__init__(parser, "Optimization Parameters")
 
 

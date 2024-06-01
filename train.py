@@ -16,7 +16,7 @@ from utils.loss_utils import l1_loss, ssim, kl_divergence
 from gaussian_renderer import render, network_gui
 import sys
 from scene import Scene, GaussianModel, DeformModel
-from utils.general_utils import safe_state, get_linear_noise_func
+from utils.general_utils import safe_state, get_linear_noise_func, get_expon_lr_func
 import uuid
 from tqdm import tqdm
 from utils.image_utils import psnr
@@ -51,7 +51,16 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations):
     best_psnr = 0.0
     best_iteration = 0
     progress_bar = tqdm(range(opt.iterations), desc="Training progress")
-    smooth_term = get_linear_noise_func(lr_init=0.1, lr_final=1e-15, lr_delay_mult=0.01, max_steps=20000)
+    # Annealing Smooth Training selection
+    if opt.ast_strategy == "linear":
+        smooth_term = get_linear_noise_func(lr_init=opt.ast_init, lr_final=opt.ast_final, lr_delay_mult=opt.ast_delay_mult, 
+                                            lr_delay_steps=opt.ast_delay_steps, max_steps=opt.ast_max_steps)
+    elif opt.ast_strategy == "exponential":
+        smooth_term = get_expon_lr_func(lr_init=opt.ast_init, lr_final=opt.ast_final, lr_delay_mult=opt.ast_delay_mult, 
+                                            lr_delay_steps=opt.ast_delay_steps, max_steps=opt.ast_max_steps)
+    else:
+        raise ValueError("Unknown AST strategy: {}".format(opt.ast_strategy))
+
     for iteration in range(1, opt.iterations + 1):
         if network_gui.conn == None:
             network_gui.try_connect()
