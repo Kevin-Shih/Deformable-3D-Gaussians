@@ -111,6 +111,24 @@ def get_linear_noise_func(
 
     return helper
 
+def get_cosine_noise_func(
+        lr_init, lr_final, interval_steps=2000, decay_coef=0.1, max_steps=1000000,
+):
+    """
+    Cosine annealing strategy
+    """
+
+    def helper(step):
+        if step < 0 or (lr_init == 0.0 and lr_final == 0.0):
+            # Disable this parameter
+            return 0.0
+        else:
+            tau = lr_final + 0.5 * (lr_init - lr_final) * (1 + 
+                 np.cos(np.pi * (step % interval_steps / interval_steps)))
+        decay = 1 - decay_coef * step / max_steps
+        return tau * decay
+
+    return helper
 
 def strip_lowerdiag(L):
     uncertainty = torch.zeros((L.shape[0], 6), dtype=torch.float, device="cuda")
@@ -191,12 +209,15 @@ def safe_state(silent):
 
 if __name__ == "__main__":
     # Test the safe_state function
-    # smooth_term = get_linear_noise_func(lr_init=0.1, lr_final=1e-15, lr_delay_mult=0.01, max_steps=20000)
-    smooth_term = get_expon_lr_func(lr_init=0.1, lr_final=1e-15, lr_delay_mult=0.01, max_steps=20000)
+    # smooth_term = get_linear_noise_func(lr_init=0.1, lr_final=1e-15, lr_delay_steps=5000, lr_delay_mult=0.01, max_steps=20000)
+    # smooth_term = get_linear_noise_func(lr_init=0.1, lr_final=1e-15, lr_delay_steps=0, lr_delay_mult=0.01, max_steps=20000)
+    # smooth_term = get_expon_lr_func(lr_init=0.1, lr_final=1e-15, lr_delay_mult=1, max_steps=20000)
+
+    smooth_term = get_cosine_noise_func(lr_init=0.1, interval_steps=20000, lr_final=1e-15, max_steps=20000, decay_coef=0.5)
     anneal = []
     for i in range(20000):
         anneal.append(smooth_term(i))
     anneal = np.array(anneal)
     x = np.linspace(0, 1, 20000)
     plt.plot(x, anneal)
-    plt.savefig("anneal_results/inear.png")
+    plt.savefig("anneal_visual/test_cosine_restart.png")

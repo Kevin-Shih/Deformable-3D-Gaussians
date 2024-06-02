@@ -16,7 +16,8 @@ from utils.loss_utils import l1_loss, ssim, kl_divergence
 from gaussian_renderer import render, network_gui
 import sys
 from scene import Scene, GaussianModel, DeformModel
-from utils.general_utils import safe_state, get_linear_noise_func, get_expon_lr_func
+from utils.general_utils import safe_state, get_linear_noise_func, \
+                                get_expon_lr_func, get_cosine_noise_func
 import uuid
 from tqdm import tqdm
 from utils.image_utils import psnr
@@ -58,6 +59,9 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations):
     elif opt.ast_strategy == "exponential":
         smooth_term = get_expon_lr_func(lr_init=opt.ast_init, lr_final=opt.ast_final, lr_delay_mult=opt.ast_delay_mult, 
                                             lr_delay_steps=opt.ast_delay_steps, max_steps=opt.ast_max_steps)
+    elif opt.ast_strategy == "cosine":
+        smooth_term = get_cosine_noise_func(lr_init=opt.ast_init, lr_final=opt.ast_final, interval_steps=opt.ast_interval_steps,
+                                             max_steps=opt.ast_max_steps) 
     else:
         raise ValueError("Unknown AST strategy: {}".format(opt.ast_strategy))
 

@@ -12,8 +12,6 @@
 from argparse import ArgumentParser, Namespace
 import sys
 import os
-from typing import Literal
-
 
 class GroupParams:
     pass
@@ -98,12 +96,15 @@ class OptimizationParams(ParamGroup):
         self.densify_until_iter = 15_000
         self.densify_grad_threshold = 0.0007
         # added hyperparameter for Annealing Smooth Training
+        # below is the default value for the hyperparameters
         self.ast_init = 0.1
         self.ast_final=1e-15
         self.ast_delay_mult = 0.01
         self.ast_delay_steps = 0
         self.ast_max_steps=20000
-        self.ast_strategy:Literal["linear", "exponential"] = "linear"
+        self.ast_strategy = "linear"
+        self.ast_decay_coef = 0.5
+        self.ast_interval_steps = 5000
         super().__init__(parser, "Optimization Parameters")
 
 
