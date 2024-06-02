@@ -11,6 +11,10 @@ This repository contains the official implementation associated with the paper "
 - added differnt annealing strategies
 - hyperparameter tuning
 
+## Instructions of using Point-E to generate the initial point cloud
+Please use [image2pointcloud.ipynb](https://github.com/openai/point-e/blob/main/point_e/examples/image2pointcloud.ipynb) to generate the 3D point cloud at t=0.
+To ensure compatibility with the program, please format it according to `fetchPly()` and `storePly()` in [dataset_readers.py](https://github.com/kie4280/Deformable-3D-Gaussians/blob/main/scene/dataset_readers.py). Save the point clouds as `points3d.ply` in the dataset.
+
 ## Dataset
 
 In our paper, we use:
