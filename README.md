@@ -10,6 +10,7 @@ This repository contains the official implementation associated with the paper "
 ## changes made
 - added differnt annealing strategies
 - hyperparameter tuning
+- add GES version in `train_ges.py`, which use GEF instead of Gaussians to represent 3D scene.
 
 ## Instructions of using Point-E to generate the initial point cloud
 Please use [image2pointcloud.ipynb](https://github.com/openai/point-e/blob/main/point_e/examples/image2pointcloud.ipynb) to generate the 3D point cloud at t=0.
@@ -196,3 +197,13 @@ And thanks to the authors of [3D Gaussians](https://repo-sam.inria.fr/fungraph/3
 }
 ```
 
+Also, thanks to the authors of [GES](https://abdullahamdi.com/ges/) for their excellent code, please consider also cite this repository:
+```
+@InProceedings{hamdi_2024_CVPR,
+    author    = {Hamdi, Abdullah and Melas-Kyriazi, Luke and Mai, Jinjie and Qian, Guocheng and Liu, Ruoshi and Vondrick, Carl and Ghanem, Bernard and Vedaldi, Andrea},
+    title     = {GES: Generalized Exponential Splatting for Efficient Radiance Field Rendering},
+    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+    year      = {2024},
+    url       = {https://abdullahamdi.com/ges/}
+}
+```
