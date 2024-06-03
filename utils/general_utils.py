@@ -206,6 +206,18 @@ def safe_state(silent):
     torch.manual_seed(0)
     torch.cuda.set_device(torch.device("cuda:0"))
 
+def var_generalized(gen_sigma,beta=torch.Tensor([2.0])):
+    return 0.5* torch.exp(torch.log(gen_sigma)+torch.lgamma(1.0/torch.abs(beta)) - torch.lgamma(3.0/torch.abs(beta)) )
+def var_approx(beta=torch.Tensor([2.0]),strength=1.0):
+    """_summary_
+
+    Args:
+        beta (_type_, optional): _the skewness parameter of geenrlized gaussian_. Defaults to torch.Tensor([2.0]).
+
+    Returns:
+        _type_: a scalar tensor for the beta activation
+    """
+    return torch.relu(2.0* torch.sigmoid(strength*beta))
 
 if __name__ == "__main__":
     # Test the safe_state function

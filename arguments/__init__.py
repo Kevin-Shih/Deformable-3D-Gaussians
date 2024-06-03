@@ -105,6 +105,16 @@ class OptimizationParams(ParamGroup):
         self.ast_strategy = "linear"
         self.ast_decay_coef = 0.5
         self.ast_interval_steps = 5000
+
+        # GES param
+        self.shape_lr = 0.001
+        self.shape_reset_interval = 1000
+        self.shape_pruning_interval = 100
+        self.prune_shape_threshold = 0.005
+        self.prune_opacity_threshold = 0.005
+        self.shape_strngth = 0.1
+        self.im_laplace_scale_factor = 0.2
+        self.lambda_im_laplace = 0.5
         super().__init__(parser, "Optimization Parameters")
 
 
