@@ -15,15 +15,17 @@ import json
 from utils.system_utils import searchForMaxIteration
 from scene.dataset_readers import sceneLoadTypeCallbacks
 from scene.gaussian_model import GaussianModel
+from scene.laplacian_model import LaplacianModel
 from scene.deform_model import DeformModel
 from arguments import ModelParams
 from utils.camera_utils import cameraList_from_camInfos, camera_to_JSON
+from typing import Union
 
 
 class Scene:
-    gaussians: GaussianModel
+    gaussians: Union[GaussianModel, LaplacianModel]
 
-    def __init__(self, args: ModelParams, gaussians: GaussianModel, load_iteration=None, shuffle=True,
+    def __init__(self, args: ModelParams, gaussians: Union[GaussianModel, LaplacianModel], load_iteration=None, shuffle=True,
                  resolution_scales=[1.0]):
         """b
         :param path: Path to colmap scene main folder.
