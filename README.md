@@ -12,6 +12,21 @@ This repository contains the official implementation associated with the paper "
 - hyperparameter tuning
 - add GES version in `train_ges.py`, which use GEF instead of Gaussians to represent 3D scene.
 
+## Instructions for using different annealing strategies
+For additional details please refer to the file arguments/\_\_init\_\_.py
+
+Below are the parameters that can be changed in the command line to modify the annealing parameters.
+```
+--ast_init  0.1
+--ast_final 1e-15
+--ast_delay_mult  0.01
+--ast_delay_steps  0
+--ast_max_steps 20000
+--ast_strategy  "linear"
+--ast_decay_coef  0.5
+--ast_interval_steps 5000
+```
+
 ## Instructions of using Point-E to generate the initial point cloud
 Please use [image2pointcloud.ipynb](https://github.com/openai/point-e/blob/main/point_e/examples/image2pointcloud.ipynb) to generate the 3D point cloud at t=0.
 To ensure compatibility with the program, please format it according to `fetchPly()` and `storePly()` in [dataset_readers.py](https://github.com/kie4280/Deformable-3D-Gaussians/blob/main/scene/dataset_readers.py). Save the point clouds as `points3d.ply` in the dataset.
